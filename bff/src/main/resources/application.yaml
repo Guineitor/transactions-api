@@ -1,1 +1,45 @@
-server.port=8080
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: 8080
+
+client:
+  queue: transaction-message-queue
+  key: body
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health, info"
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+      enabled: true
+    info:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: @project.name@
+    description: @project.description@
+    version: @project.version@
+    java:
+      version: @java.version@
+      runtime: @java.runtime.name@ @java.runtime.version@
+    encoding: @project.build.sourceEncoding@

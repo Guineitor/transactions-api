@@ -1,0 +1,8 @@
+package com.transaction.bff.gateways.http.interfaces;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RequestMapping("/api/v1/transactions")
+public interface BaseController {
+}
