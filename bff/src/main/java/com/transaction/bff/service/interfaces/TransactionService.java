@@ -5,5 +5,5 @@ import reactor.core.publisher.Mono;
 
 public interface TransactionService {
 
-    Mono<Void> save(final Transaction transaction);
+    Mono<Transaction> save(final Transaction transaction);
 }

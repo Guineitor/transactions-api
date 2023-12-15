@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Slf4j
@@ -27,6 +28,7 @@ public class TransactionMessageListener {
         public void receiveMessage(Map<String, String> message) throws IOException {
             String body = message.get(key);
             Transaction transaction = mapper.parse(body) ;
+            transaction.setTransactionDate(LocalDateTime.now());
             service.save(transaction)
                     .doOnNext(t -> service.confirmation(t))
                     .doOnSuccess(t -> log.info("Transaction saved: {}", t.getId()))

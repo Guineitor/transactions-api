@@ -4,6 +4,7 @@ import com.transaction.bff.domain.Transaction;
 import com.transaction.bff.gateways.http.interfaces.BaseController;
 import com.transaction.bff.service.interfaces.TransactionService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 public class TransactionController implements BaseController {
 
@@ -22,8 +23,9 @@ public class TransactionController implements BaseController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Void> create(@Validated @RequestBody final Transaction transaction){
+    public Mono<Transaction> create(@Validated @RequestBody final Transaction transaction){
         return service.save(transaction)
-                .doOnNext(t -> log.info("creating new transaction - desc {}", transaction.getDescription()));
+                .doOnNext(t -> log.info("creating new transaction - desc {}", transaction.getDescription()))
+                .switchIfEmpty(Mono.justOrEmpty(transaction));
     }
 }

@@ -17,7 +17,7 @@ public class TransactionServiceUSD implements TransactionService {
     public static final String ERROR_MESSAGE = "error sending transaction to queue - desc {}";
     private final TransactionGateway transactionGateway;
     @Override
-    public Mono<Void> save(final Transaction transaction) {
+    public Mono<Transaction> save(final Transaction transaction) {
 
         transactionGateway.sendMessage(transaction)
                 .doOnSuccess(t -> log.info("sending transaction to queue - desc {}", transaction.getDescription()))
@@ -25,7 +25,7 @@ public class TransactionServiceUSD implements TransactionService {
                     log.error(ERROR_MESSAGE, transaction.getDescription());
                     throw new TransactionNotSavedException(transaction);
                 })
-                .subscribe();
+                .switchIfEmpty(Mono.justOrEmpty(transaction).then());
 
         return Mono.empty();
     }
