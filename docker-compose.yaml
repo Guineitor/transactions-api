@@ -5,22 +5,22 @@ services:
     image: transaction-bff
     build: ./bff
     ports:
-      - 8080:8080
-    depends_on:
-      - rabbitmq
+      - "8080:8080"
+    links:
+      - rabbitmq:rabbitmq
     expose:
-      - 8080
+      - "8080"
       
   transaction-worker:
     image: transaction-worker
     build: ./worker
     ports:
-      - 8081:8081
-    depends_on:
-      - rabbitmq
-      - local-mongodb
+      - "8081:8081"
+    links:
+      - rabbitmq:rabbitmq
+      - local-mongodb:local-mongodb
     expose:
-      - 8080
+      - "8081"
 
   rabbitmq:
     image: rabbitmq:management

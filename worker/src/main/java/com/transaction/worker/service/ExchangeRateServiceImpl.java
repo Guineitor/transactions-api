@@ -37,7 +37,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
         ExchangeInfo exchangeInfo = fiscalDataResult
                 .getData()
                 .stream()
-                .filter(i -> i.getCountry().equals(country))
+                .filter(i -> i.getCountry().equalsIgnoreCase(country))
                 .sorted(Collections.reverseOrder((i1, i2) -> i2.getRecordDate().compareTo(i1.getRecordDate())))
                 .findFirst().
                 orElseThrow();
